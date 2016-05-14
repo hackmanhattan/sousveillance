@@ -1,0 +1,10 @@
+#!/bin/sh
+[ "$ACTION" = ifup ] && [ "$DEVICE" = "eth0.2" ] && {
+  PS="`ps w`"
+  echo "$PS" | grep -q ngrep
+  if [ $? -eq 0 ]; then
+    killall ngrep
+  fi
+  ngrep -p -l -q -W single -t -d eth0.2 "Agent" port 8080 and not host 188.40.46.12 >> /tmp/log/agent.log &
+}
+

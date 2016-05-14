@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Sousveillance</title>
+<meta charset="utf-8"/>
+<script src="jquery-2.1.3.min.js"></script>
+<script>
+<!--
+function parselog(log) {
+    lines = log.split('\n');
+    last = lines[lines.length-2];
+    last = last.split('..');
+    head = last[0].split(' ');
+    url = head[head.length-2];
+    if (url.indexOf("=") > -1) {
+        var kind = url.split("=")[1];
+        if (kind.indexOf("stream") == -1 && kind.indexOf("snapshot") == -1)
+            kind = "invalid";
+    } else {
+        var kind = "invalid";
+    }
+    dl = head[1].split('/');
+    tl = head[2].split(':');
+    sl = tl[2].split('.');
+    datetime = new Date(dl[0]-0, dl[1]-1, dl[2]-0, tl[0]-0, tl[1]-0, sl[0]-0);
+    for (i in last) {
+        if (last[i].indexOf('User-Agent') > -1)
+            var ua = last[i];
+    }
+    return {kind: kind, ip: head[3].split(":")[0], datetime: datetime, ua: ua};
+}
+
+function checklog() {
+    $.ajax({url: 'agent.log?' + Math.random(), contentType: 'text/plain; charset=UTF-8'})
+        .done(function(d) {
+            var result = parselog(d);
+            var now = new Date().getTime() / 1000;
+            var then = result.datetime.getTime() / 1000;
+            if (now - then < 6 && result.kind != "invalid") {
+                new Notification("Hack Manhattan Webcam Access",
+                                 { body: 'Kind: ' + result.kind + '\n' +
+                                         'IP: ' + result.ip + '\n' +
+                                         result.ua });
+            }
+        });
+}
+
+$(function() {
+    Notification.requestPermission(function(result) {
+        if (result === 'denied') {
+            return;
+        } else if (result === 'default') {
+            return;
+        }
+        new Notification("Webcam access notifications now on!");
+    });
+    setInterval(checklog, 5000);
+});
+-->
+</script>
+</head>
+<body>
+<center>
+<a target="_blank" href="https://en.wikipedia.org/wiki/Sousveillance"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/SurSousVeillanceByStephanieMannAge6.png/575px-SurSousVeillanceByStephanieMannAge6.png" /></a>
+</center>
+</body>
+</html>
