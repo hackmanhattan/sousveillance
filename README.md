@@ -5,11 +5,11 @@ Hack Manhattan has a [publicly accessible webcam](https://wiki.hackmanhattan.com
 so my first attempt to evening the playing field was to at least know when
 someone (from outside the space) checked the feed.
 
-`mjpeg-streamer` which ships its own http server doesn't support any logging,
-so I'm using [ngrep](http://ngrep.sourceforge.net/) to dig through the incoming
-traffic to see what/where/etc.
+`nginx` is now used for proxying `mjpeg-streamer` and writes `agent.log` json
+lines.
 
 ## Requirements
 
-* ngrep
-* `jquery-2.1.3.min.js` in /www/sousveillance/
+* `agent.log` with the following format in the same folder:
+  `log_format camera escape=json '{"time": "$time_local", "ip": "$remote_addr", "action": "$request", "agent": "$http_user_agent", "referer": "$http_referer"}';`
+* `jquery-2.2.4.min.js` in the same foldersousveillance/
