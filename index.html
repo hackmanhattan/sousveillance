@@ -8,8 +8,8 @@
 <!--
 function parselog(log) {
     lines = log.split('\n');
-    last = lines[lines.length-2];
-    last = JSON && JSON.parse(last) || $.parseJSON(last);
+    lastl = lines[lines.length-2];
+    last = JSON && JSON.parse(lastl) || $.parseJSON(lastl);
 
     if (Object.keys(last).length == 0) return;
 
@@ -20,13 +20,14 @@ function parselog(log) {
     if (kind == "stream") start = last.action.indexOf(".html") > -1;
 
     return {kind: kind, ip: last.ip, datetime: datetime, ua: last.agent,
-            start: start};
+            start: start, line: lastl};
 }
 
 function checklog() {
+    var lastchecked = '';
     $.ajax({url: 'agent.log?' + Math.random(),
             contentType: 'text/plain; charset=UTF-8'})
-        .done(function(d) {
+        .done(function(d, l=lastchecked) {
             var result = parselog(d);
             if (!result) return; 
             var now = new Date().getTime() / 1000;
@@ -37,8 +38,9 @@ function checklog() {
                 var notify = "Snapshot taken!";
             }
             notify = { body: notify + "\nby: " + result.ip + "\n" + result.ua }
-            if (now - then < 6) {
+            if (now - then < 6 && result.line != l) {
                 new Notification("Hack Manhattan Webcam Access", notify);
+                l = result.line;
             }
         });
 }
